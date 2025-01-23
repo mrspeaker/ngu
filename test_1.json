@@ -1,0 +1,13 @@
+{
+    "title":"big wow II",
+    "test_script": "this.tick--;console.log(this);",
+    "bgColor": "#035",
+    "fgColor": "#f35",
+    "ents": {
+        "text": {
+            "msg": "{{this.title}}",
+            "x": 20,
+            "y": 20
+        }
+    }
+}
