@@ -9,6 +9,7 @@ export const mk_ecs = () => {
     const ents_comp = [];
 
     return {
+        get_comps: (name) => comps.filter((c) => c.name == name),
         mk_ent: () => ent_id++,
         mk_comp: (name, state) => {
             const comp = {
@@ -39,6 +40,9 @@ export const mk_ecs = () => {
                     ({ ent }) => ent,
                 );
                 const matching_ents = comp_names.slice(1).reduce((ac, el) => {
+                    if (ac.length == 0 || !comps_ent[el]) {
+                        return [];
+                    }
                     const comp_ents = comps_ent[el].map(({ ent }) => ent);
                     return ac.filter((e) => comp_ents.includes(e));
                 }, initial_ents);
@@ -51,6 +55,7 @@ export const mk_ecs = () => {
     };
 };
 
+/*
 const ecs = mk_ecs();
 const e1 = ecs.mk_ent();
 const c1 = ecs.mk_comp("boop", { x: 1 });
@@ -76,3 +81,4 @@ ecs.mk_system("beeper", ["boop", "beep"], (boop, beep) => {
 });
 
 ecs.tick();
+*/

@@ -10,7 +10,7 @@ export function mk_renderer() {
             ctx.fillText(state.tick, 100, 100);
 
             ctx.fillStyle = "#f0f";
-            state.ents.forEach((e) => {
+            state.ecs.get_comps("pos").forEach((e) => {
                 ctx.fillRect(e.x, e.y, e.w, e.h);
             });
         },

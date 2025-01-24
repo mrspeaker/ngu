@@ -3,12 +3,15 @@
     "test_script": "this.tick--;console.log(this);",
     "bgColor": "#035",
     "fgColor": "#f35",
-    "ents": {
-        "e1": {
-            "x": 20,
-            "y": 20,
-            "w": 20,
-            "h": 20
-        }
-    }
+    "ents": [
+        [{
+            "name": "pos",
+            "state": {
+                "x": 10,
+                "y": 10,
+                "w": 10,
+                "h": 10
+            }
+        }]
+    ]
 }

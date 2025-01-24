@@ -1,21 +1,28 @@
+import { mk_ecs } from "./ecs.js";
+
 export function mk_runner(proj) {
+    const ecs = mk_ecs();
     const state = {
         title: proj.title,
         tick: 0,
         running: true,
+        ecs,
         onTick: () => {}, //new Function(proj.test_script),
         bgColor: proj.bgColor || "#000",
         fgColor: proj.fgColor || "#fff",
-        ents: [],
     };
 
-    Object.entries(proj.ents).forEach(([k, v]) => {
-        state.ents.push({
-            x: v.x,
-            y: v.y,
-            w: v.w,
-            h: v.h,
+    proj.ents.forEach((ent_def) => {
+        const ent = ecs.mk_ent();
+        ent_def.forEach(({ name, state }) => {
+            const comp = ecs.mk_comp(name, state);
+            ecs.add_comp(ent, comp);
         });
+    });
+
+    ecs.mk_system("move_sys", ["pos", "move"], (p, m) => {
+        p.x += m.xo;
+        p.y += m.yo;
     });
 
     return {
@@ -26,12 +33,7 @@ export function mk_runner(proj) {
             }
             state.onTick();
             state.tick++;
-            state.ents.forEach((e) => {
-                e.x += 1;
-                if (e.x > 300) {
-                    e.x = 0;
-                }
-            });
+            state.ecs.tick();
         },
     };
 }
