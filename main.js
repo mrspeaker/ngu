@@ -1,4 +1,4 @@
-import "./data/test_0.js";
+// import "./data/test_0.js";
 import { $, $click } from "./eq.js";
 import { mk_runner_from_path } from "./runner.js";
 import { mk_renderer } from "./renderer.js";
@@ -16,8 +16,11 @@ async function main() {
 main();
 
 function init_ui(world) {
-    $click("#btn1", async () => {
+    $click("#btnLoad", async () => {
         world.game = await load_random_test_game();
+    });
+    $click("#btnPause", async () => {
+        world.game.state.running = !world.game.state.running;
     });
 }
 
