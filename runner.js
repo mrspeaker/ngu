@@ -1,6 +1,6 @@
 import { mk_ecs } from "./ecs.js";
 
-export function mk_runner(proj) {
+export function mk_runner(proj, path) {
     const w = proj.w || 320;
     const h = proj.h || 200;
 
@@ -15,6 +15,8 @@ export function mk_runner(proj) {
         fgColor: proj.fgColor || "#fff",
         w,
         h,
+        path,
+        proj,
     };
 
     proj.ents.forEach((ent_def) => {
@@ -45,5 +47,5 @@ export function mk_runner(proj) {
 export function mk_runner_from_path(path) {
     return fetch(path)
         .then((r) => r.json())
-        .then(mk_runner);
+        .then((j) => mk_runner(j, path));
 }

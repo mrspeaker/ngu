@@ -59,7 +59,7 @@
             "name": "spawn_sys",
             "comps": ["spawner", "pos"],
             "args": ["ecs", "s", "p"],
-            "body": "s.t+=1; if(s.t < 250) { return; };\ns.t = 0;\necs.boop(p.x,p.y);"
+            "body": "s.t+=1; if(s.t < 250) { return; };\ns.t = 0;\necs.spawn_test(p.x,p.y);"
         }
     ]
 }

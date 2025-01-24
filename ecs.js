@@ -14,7 +14,7 @@ export const mk_ecs = (w, h) => {
             h,
         },
         get_comps: (name) => comps.filter((c) => c.name == name),
-        boop: function (x, y) {
+        spawn_test: function (x, y) {
             const ecs = this;
             const e = ecs.mk_ent();
             const m = ecs.mk_comp("move", {

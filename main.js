@@ -22,6 +22,7 @@ function init_ui(world) {
     $click("#btnLoad", async () => {
         world.game = await load_random_test_game();
         world.renderer.reset(world.game.state);
+        $("#proj").innerText = JSON.stringify(world.game.state.proj, null, 2);
     });
     $click("#btnPause", async () => {
         world.game.state.running = !world.game.state.running;

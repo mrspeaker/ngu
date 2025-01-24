@@ -1,0 +1,9 @@
+body {
+}
+
+pre {
+    height: 300px;
+    overflow: auto;
+    font-size: 7pt;
+    line-height: 1em;
+}
