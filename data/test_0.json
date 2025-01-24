@@ -1,0 +1,21 @@
+{
+    "title":"terrifying cantilopes won't ever stop",
+    "test_script": "console.log('hi');",
+    "bgColor": "#000",
+    "fgColor": "#fff",
+    "ents": {
+        "e1": {
+            "x": 20,
+            "y": 120,
+            "w": 10,
+            "h": 20
+        },
+        "e2": {
+            "x": 50,
+            "y": 20,
+            "w": 10,
+            "h": 10
+        }
+
+    }
+}
