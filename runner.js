@@ -20,14 +20,8 @@ export function mk_runner(proj) {
         });
     });
 
-    ecs.mk_system("move_sys", ["pos", "move"], (p, m) => {
-        p.x += m.xo;
-        p.y += m.yo;
-    });
-
-    ecs.mk_system("bob_sys", ["pos", "bob"], (p, b) => {
-        b.dt += b.fq;
-        p.y += Math.sin(b.dt) * b.amp;
+    proj.systems.forEach(({ name, comps, args, body }) => {
+        ecs.mk_system(name, comps, new Function(...args, body));
     });
 
     return {

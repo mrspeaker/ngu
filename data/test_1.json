@@ -21,5 +21,19 @@
                  "fq": 0.1
              }
          }]
+    ],
+    "systems": [
+        {
+            "name": "move_sys",
+            "comps": ["pos", "move"],
+            "args": ["p", "m"],
+            "body": "p.x += m.xo;\np.y += m.yo;"
+        },
+        {
+            "name": "bob_sys",
+            "comps": ["pos", "bob"],
+            "args": ["p", "b"],
+            "body": "b.dt += b.fq;\np.y += Math.sin(b.dt) * b.amp;"
+        }
     ]
 }

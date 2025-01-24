@@ -22,21 +22,21 @@ export const mk_ecs = () => {
             return comp;
         },
         mk_system: (name, comp_names, f) => {
-            const comps = [...comp_names.map(() => ({}))];
-            systems.push({ name, comp_names, comps, f });
+            systems.push({ name, comp_names, f });
         },
         add_comp: (ent, comp) => {
+            // Making two lookups: one from comp_name to list of ent ids,
+            // and one from ent id to OBJECT of comps by comp_name
             comps_ent[comp.name] = comps_ent[comp.name] || [];
             comps_ent[comp.name].push({ comp, ent });
-            console.log("Add", ent, comp, ":::", comps_ent[comp.name]);
-
             ents_comp[ent] = ents_comp[ent] || {};
             ents_comp[ent][comp.name] = comp;
         },
         tick: () => {
-            systems.forEach(({ name, comp_names, comps, f }) => {
+            systems.forEach(({ name, comp_names, f }) => {
                 // TODO: cache until add/remove comps
-                const initial_ents = comps_ent[comp_names[0]].map(
+                const first_comp_name = comp_names[0];
+                const initial_ents = comps_ent[first_comp_name].map(
                     ({ ent }) => ent,
                 );
                 const matching_ents = comp_names.slice(1).reduce((ac, el) => {
@@ -46,7 +46,12 @@ export const mk_ecs = () => {
                     const comp_ents = comps_ent[el].map(({ ent }) => ent);
                     return ac.filter((e) => comp_ents.includes(e));
                 }, initial_ents);
-                const comps_by_ent = matching_ents.map((e) => ents_comp[e]);
+                const comps_by_ent = matching_ents.map((e) => {
+                    // Get the ent's comps for each comp name
+                    return comp_names.map((cn) => ents_comp[e][cn]);
+                });
+
+                // Run the system against each entity
                 comps_by_ent.forEach((cs) => {
                     f(...Object.values(cs));
                 });

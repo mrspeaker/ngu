@@ -13,6 +13,14 @@
                 "h": 5
             }
         },
+         {
+             "name": "bob",
+             "state": {
+                 "dt": 0,
+                 "amp": 0.5,
+                 "fq": 0.1
+             }
+         },
         {
             "name": "move",
             "state": {
@@ -20,5 +28,19 @@
                 "yo": -0.2
             }
         }]
+    ],
+    "systems": [
+        {
+            "name": "move_sys",
+            "comps": ["pos", "move"],
+            "args": ["p", "m"],
+            "body": "p.x += m.xo;\np.y += m.yo;"
+        },
+        {
+            "name": "bob_sys",
+            "comps": ["pos", "bob"],
+            "args": ["p", "b"],
+            "body": "b.dt += b.fq;\np.y += Math.sin(b.dt) * b.amp;"
+        }
     ]
 }
