@@ -1,4 +1,4 @@
-const mk_ecs = () => {
+export const mk_ecs = () => {
     let ent_id = 0;
     let comp_id = 0;
 
@@ -11,13 +11,14 @@ const mk_ecs = () => {
     return {
         mk_ent: () => ent_id++,
         mk_comp: (name, state) => {
-            comps.push({
+            const comp = {
                 name,
                 id: comp_id,
                 ...state,
-            });
+            };
+            comps.push(comp);
             comp_id++;
-            return comp_id++;
+            return comp;
         },
         mk_system: (name, comp_names, f) => {
             const comps = [...comp_names.map(() => ({}))];
@@ -26,12 +27,14 @@ const mk_ecs = () => {
         add_comp: (ent, comp) => {
             comps_ent[comp.name] = comps_ent[comp.name] || [];
             comps_ent[comp.name].push({ comp, ent });
+            console.log("Add", ent, comp, ":::", comps_ent[comp.name]);
 
             ents_comp[ent] = ents_comp[ent] || {};
-            ents_comp[comp.name] = comp;
+            ents_comp[ent][comp.name] = comp;
         },
         tick: () => {
             systems.forEach(({ name, comp_names, comps, f }) => {
+                // TODO: cache until add/remove comps
                 const initial_ents = comps_ent[comp_names[0]].map(
                     ({ ent }) => ent,
                 );
@@ -39,26 +42,37 @@ const mk_ecs = () => {
                     const comp_ents = comps_ent[el].map(({ ent }) => ent);
                     return ac.filter((e) => comp_ents.includes(e));
                 }, initial_ents);
-
                 const comps_by_ent = matching_ents.map((e) => ents_comp[e]);
                 comps_by_ent.forEach((cs) => {
-                    f(...cs);
+                    f(...Object.values(cs));
                 });
             });
         },
     };
 };
 
-/*
-  Something like this:
 const ecs = mk_ecs();
-const comp = ecs.mk_comp("boop", { x: 1 });
-const ent = ecs.mk_ent();
-ecs.add_comp(ent, comp);
+const e1 = ecs.mk_ent();
+const c1 = ecs.mk_comp("boop", { x: 1 });
+const c1b = ecs.mk_comp("beep", { b: true });
+ecs.add_comp(e1, c1);
+ecs.add_comp(e1, c1b);
 
-ecs.mk_system("move", ["boop"], ([b]) => {
+const e2 = ecs.mk_ent();
+const c2 = ecs.mk_comp("boop", { x: 10 });
+const c2b = ecs.mk_comp("beep", { b: true });
+ecs.add_comp(e2, c2);
+ecs.add_comp(e2, c2b);
+
+ecs.mk_system("move", ["boop"], (b) => {
     b.x += 1;
+});
+ecs.mk_system("beeper", ["boop", "beep"], (boop, beep) => {
+    if (boop.x <= 10) {
+        console.log("beeeep", beep.b);
+    } else {
+        console.log("no beep", beep.b);
+    }
 });
 
 ecs.tick();
-*/

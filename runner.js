@@ -3,7 +3,7 @@ export function mk_runner(proj) {
         title: proj.title,
         tick: 0,
         running: true,
-        onTick: new Function(proj.test_script),
+        onTick: () => {}, //new Function(proj.test_script),
         bgColor: proj.bgColor || "#000",
         fgColor: proj.fgColor || "#fff",
         ents: [],

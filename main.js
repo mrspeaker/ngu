@@ -1,6 +1,7 @@
+import { $, $click } from "./eq.js";
 import { mk_runner_from_path } from "./runner.js";
 import { mk_renderer } from "./renderer.js";
-import { $, $click } from "./eq.js";
+import { mk_ecs } from "./ecs.js";
 
 async function main() {
     const world = {
