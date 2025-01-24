@@ -6,6 +6,7 @@ const mk_ecs = () => {
     const systems = [];
 
     const comps_ent = [];
+    const ents_comp = [];
 
     return {
         mk_ent: () => ent_id++,
@@ -18,16 +19,31 @@ const mk_ecs = () => {
             comp_id++;
             return comp_id++;
         },
-        mk_system: (name, comps, f) => {
-            systems.push({ name, comps, f });
+        mk_system: (name, comp_names, f) => {
+            const comps = [...comp_names.map(() => ({}))];
+            systems.push({ name, comp_names, comps, f });
         },
         add_comp: (ent, comp) => {
             comps_ent[comp.name] = comps_ent[comp.name] || [];
             comps_ent[comp.name].push({ comp, ent });
+
+            ents_comp[ent] = ents_comp[ent] || {};
+            ents_comp[comp.name] = comp;
         },
         tick: () => {
-            systems.forEach(({ name, comps, f }) => {
-                // run system on matching comps
+            systems.forEach(({ name, comp_names, comps, f }) => {
+                const initial_ents = comps_ent[comp_names[0]].map(
+                    ({ ent }) => ent,
+                );
+                const matching_ents = comp_names.slice(1).reduce((ac, el) => {
+                    const comp_ents = comps_ent[el].map(({ ent }) => ent);
+                    return ac.filter((e) => comp_ents.includes(e));
+                }, initial_ents);
+
+                const comps_by_ent = matching_ents.map((e) => ents_comp[e]);
+                comps_by_ent.forEach((cs) => {
+                    f(...cs);
+                });
             });
         },
     };
