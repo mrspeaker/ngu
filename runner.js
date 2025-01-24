@@ -25,6 +25,11 @@ export function mk_runner(proj) {
         p.y += m.yo;
     });
 
+    ecs.mk_system("bob_sys", ["pos", "bob"], (p, b) => {
+        b.dt += b.fq;
+        p.y += Math.sin(b.dt) * b.amp;
+    });
+
     return {
         state,
         tick: () => {

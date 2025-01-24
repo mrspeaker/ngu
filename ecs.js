@@ -54,31 +54,3 @@ export const mk_ecs = () => {
         },
     };
 };
-
-/*
-const ecs = mk_ecs();
-const e1 = ecs.mk_ent();
-const c1 = ecs.mk_comp("boop", { x: 1 });
-const c1b = ecs.mk_comp("beep", { b: true });
-ecs.add_comp(e1, c1);
-ecs.add_comp(e1, c1b);
-
-const e2 = ecs.mk_ent();
-const c2 = ecs.mk_comp("boop", { x: 10 });
-const c2b = ecs.mk_comp("beep", { b: true });
-ecs.add_comp(e2, c2);
-ecs.add_comp(e2, c2b);
-
-ecs.mk_system("move", ["boop"], (b) => {
-    b.x += 1;
-});
-ecs.mk_system("beeper", ["boop", "beep"], (boop, beep) => {
-    if (boop.x <= 10) {
-        console.log("beeeep", beep.b);
-    } else {
-        console.log("no beep", beep.b);
-    }
-});
-
-ecs.tick();
-*/
