@@ -3,6 +3,8 @@
     "test_script": "console.log('hi');",
     "bgColor": "#000",
     "fgColor": "#fff",
+    "w": 420,
+    "h": 280,
     "ents": [
         [{
             "name": "pos",
@@ -22,7 +24,12 @@
                 "xo": 0.5,
                 "yo": -0.2
             }
-        }],
+        },
+         {
+             "name": "spawner",
+             "state": { "t": 0 }
+         }
+        ],
         [
             {
                 "name": "pos",
@@ -32,10 +39,6 @@
                     "w": 5,
                     "h": 5
                 }
-            },
-            {
-                "name": "spawner",
-                "state": { "t": 0 }
             }
         ]
     ],
@@ -44,7 +47,7 @@
             "name": "move_sys",
             "comps": ["pos", "move"],
             "args": ["ecs", "p", "m"],
-            "body": "p.x += m.xo;\np.y += m.yo;"
+            "body": "p.x += m.xo;\np.y += m.yo;if(p.x<0)p.x=ecs.world.w;if(p.x>ecs.world.w)p.x=0;if(p.y<0)p.y=ecs.world.h;if(p.y>ecs.world.h)p.y=0;"
         },
         {
             "name": "bob_sys",
@@ -56,7 +59,7 @@
             "name": "spawn_sys",
             "comps": ["spawner", "pos"],
             "args": ["ecs", "s", "p"],
-            "body": "s.t+=1; if(s.t < 250) { return; };\ns.t = 0;\necs.boop();"
+            "body": "s.t+=1; if(s.t < 250) { return; };\ns.t = 0;\necs.boop(p.x,p.y);"
         }
     ]
 }

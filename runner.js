@@ -1,7 +1,10 @@
 import { mk_ecs } from "./ecs.js";
 
 export function mk_runner(proj) {
-    const ecs = mk_ecs();
+    const w = proj.w || 320;
+    const h = proj.h || 200;
+
+    const ecs = mk_ecs(w, h);
     const state = {
         title: proj.title,
         tick: 0,
@@ -10,6 +13,8 @@ export function mk_runner(proj) {
         onTick: () => {}, //new Function(proj.test_script),
         bgColor: proj.bgColor || "#000",
         fgColor: proj.fgColor || "#fff",
+        w,
+        h,
     };
 
     proj.ents.forEach((ent_def) => {

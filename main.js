@@ -5,9 +5,12 @@ import { mk_renderer } from "./renderer.js";
 import { mk_ecs } from "./ecs.js";
 
 async function main() {
+    const game = await load_random_test_game();
+    const renderer = mk_renderer(game.state);
+
     const world = {
-        game: await load_random_test_game(),
-        renderer: mk_renderer(),
+        game,
+        renderer,
     };
 
     init_ui(world);
@@ -18,6 +21,7 @@ main();
 function init_ui(world) {
     $click("#btnLoad", async () => {
         world.game = await load_random_test_game();
+        world.renderer.reset(world.game.state);
     });
     $click("#btnPause", async () => {
         world.game.state.running = !world.game.state.running;

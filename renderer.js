@@ -1,7 +1,12 @@
-export function mk_renderer() {
+export function mk_renderer(state) {
     const ctx = document.querySelector("#board").getContext("2d");
-    return {
+
+    const renderer = {
         ctx,
+        reset: (state) => {
+            ctx.canvas.width = state.w;
+            ctx.canvas.height = state.h;
+        },
         render: (state) => {
             ctx.fillStyle = state.bgColor;
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -15,4 +20,7 @@ export function mk_renderer() {
             });
         },
     };
+
+    renderer.reset(state);
+    return renderer;
 }

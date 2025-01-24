@@ -1,4 +1,4 @@
-export const mk_ecs = () => {
+export const mk_ecs = (w, h) => {
     let ent_id = 0;
     let comp_id = 0;
 
@@ -9,15 +9,19 @@ export const mk_ecs = () => {
     const ents_comp = [];
 
     return {
+        world: {
+            w,
+            h,
+        },
         get_comps: (name) => comps.filter((c) => c.name == name),
-        boop: function () {
+        boop: function (x, y) {
             const ecs = this;
             const e = ecs.mk_ent();
             const m = ecs.mk_comp("move", {
                 xo: Math.random() - 0.5,
                 yo: Math.random() - 0.5,
             });
-            const p = ecs.mk_comp("pos", { x: 80, y: 80, w: 5, h: 5 });
+            const p = ecs.mk_comp("pos", { x, y, w: 5, h: 5 });
             ecs.add_comp(e, p);
             ecs.add_comp(e, m);
         },
