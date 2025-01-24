@@ -1,3 +1,4 @@
+import "./data/test_0.js";
 import { $, $click } from "./eq.js";
 import { mk_runner_from_path } from "./runner.js";
 import { mk_renderer } from "./renderer.js";
@@ -21,8 +22,8 @@ function init_ui(world) {
 }
 
 async function load_random_test_game() {
-    const path = "data/test_" + ((Math.random() * 2) | 0);
-    return await mk_runner_from_path(path + ".json");
+    const path = "data/test_" + ((Math.random() * 2) | 0) + ".json";
+    return await mk_runner_from_path(path);
 }
 
 function run(world) {

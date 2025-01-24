@@ -6,17 +6,12 @@
     "ents": [
         [{
             "name": "pos",
-            "state": {
-                "x": 10,
-                "y": 130,
-                "w": 5,
-                "h": 5
-            }
+            "state": { "x": 10, "y": 130, "w": 5, "h": 5 }
         },
          {
              "name": "bob",
              "state": {
-                 "dt": 0,
+                 "t": 0,
                  "amp": 0.5,
                  "fq": 0.1
              }
@@ -27,20 +22,41 @@
                 "xo": 0.5,
                 "yo": -0.2
             }
-        }]
+        }],
+        [
+            {
+                "name": "pos",
+                "state": {
+                    "x": 10,
+                    "y": 130,
+                    "w": 5,
+                    "h": 5
+                }
+            },
+            {
+                "name": "spawner",
+                "state": { "t": 0 }
+            }
+        ]
     ],
     "systems": [
         {
             "name": "move_sys",
             "comps": ["pos", "move"],
-            "args": ["p", "m"],
+            "args": ["ecs", "p", "m"],
             "body": "p.x += m.xo;\np.y += m.yo;"
         },
         {
             "name": "bob_sys",
             "comps": ["pos", "bob"],
-            "args": ["p", "b"],
-            "body": "b.dt += b.fq;\np.y += Math.sin(b.dt) * b.amp;"
+            "args": ["ecs", "p", "b"],
+            "body": "b.t += b.fq;\np.y += Math.sin(b.t) * b.amp;"
+        },
+        {
+            "name": "spawn_sys",
+            "comps": ["spawner", "pos"],
+            "args": ["ecs", "s", "p"],
+            "body": "s.t+=1; if(s.t < 250) { return; };\ns.t = 0;\necs.boop();"
         }
     ]
 }
